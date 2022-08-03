@@ -66,6 +66,29 @@ if (ent.isIntersecting ===true){
 );
 obs.observe(sectionHeroEl);
 
+
+
+// Revealing Sections
+const allSections = document.querySelectorAll(".section")
+console.log(allSections);
+
+const sectionObsCallBack = function(entries, observer){
+const  [entry] = entries
+console.log(entry.target)
+entry.target.classList.remove("section--hidden")
+}
+
+const sectionObserver = new IntersectionObserver(sectionObsCallBack, {
+  root: null,
+  threshold: 0.15,
+})
+
+allSections.forEach(sections=>{
+  sectionObserver.observe(sections)
+  sections.classList.add("section--hidden")
+})
+
+
 ///////////////////////////////////////////////////////////
 // Fixing flexbox gap property missing in some Safari versions
 function checkFlexGap() {
