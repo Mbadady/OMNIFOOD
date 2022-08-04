@@ -1,21 +1,20 @@
 console.log("Hello world")
 
+// Element selection
 const yearEl=document.querySelector(".year");
-yearEl.textContent=3000;
-
-const currentYear=new Date().getFullYear();
-yearEl.textContent = currentYear;
-
 const btnNavEl = document.querySelector(".btn-mobile-nav");
-
 const headerEl = document.querySelector(".header");
+const allLinks = document.querySelectorAll("a:link");
+const sectionHeroEl = document.querySelector(".section-hero");
+const allSections = document.querySelectorAll(".section");
+
+const currentYear = new Date().getFullYear();
+yearEl.textContent = currentYear;
 
 btnNavEl.addEventListener("click",function(){
   headerEl.classList.toggle("nav-open");
 })
 
-const allLinks = document.querySelectorAll("a:link");
-console.log(allLinks);
 
 allLinks.forEach(function (link) {
   link.addEventListener("click", function (e) {
@@ -41,9 +40,15 @@ allLinks.forEach(function (link) {
   });
 });
 
-///////////////////
+/////////////////////////////////////////////
 // sticky navigation
-const sectionHeroEl= document.querySelector(".section-hero")
+
+// console.log(document.querySelector(".main-nav").getBoundingClientRect().height);
+const navHeight = document
+  .querySelector(".main-nav")
+  .getBoundingClientRect().height; // this is the height of the nav. instead of hardcoding the height in the rootMargin, we get the height from the ClientRect so that when the height changes due to responsiveness
+  console.log(navHeight);
+
 const obs= new IntersectionObserver(function(entries){
   const ent=entries[0];
   console.log(ent);
@@ -61,15 +66,15 @@ if (ent.isIntersecting ===true){
   // in the viewport
   root: null,
   threshold: 0,
-  rootMargin:"-80px",
+  rootMargin:`-${navHeight}px`, // must be in px
 }
 );
 obs.observe(sectionHeroEl);
 
 
-
+///////////////////////////////////////////////
 // Revealing Sections
-const allSections = document.querySelectorAll(".section")
+
 console.log(allSections);
 
 const sectionObsCallBack = function(entries, observer){
@@ -87,6 +92,38 @@ allSections.forEach(sections=>{
   sectionObserver.observe(sections)
   sections.classList.add("section--hidden")
 })
+
+/////////////////////////////////////////////
+// menu fade animation
+
+// refactoring the code to obey the DRY principle
+
+const handlerFunction = function (e) {
+  console.log(this); //the *this* keyword refers to the object in which the function is called. in here it is called with 0.5. see handlerFunction.bind(0.5)
+  if (e.target.classList.contains("main-nav-link")) {
+    const link = e.target; // this is the element the mouse hovers over
+    const siblings = link
+      .closest(".nav-list")
+      .querySelectorAll(".main-nav-link"); //this will select the siblings of the main-nav-link and returning a nodeList which can now be looped using forEach
+
+    const logo = link.closest(".main-nav").querySelector("img");
+    console.log(logo);
+
+    siblings.forEach((indivEl) => {
+      if (indivEl !== link) {
+        indivEl.style.opacity = this;
+        logo.style.opacity = this;
+      }
+    });
+  }
+};
+
+const unorderedListNav = document.querySelector(".nav-list")
+
+unorderedListNav.addEventListener("mouseover", handlerFunction.bind(0.5))
+unorderedListNav.addEventListener("mouseout", handlerFunction.bind(1))
+/* // calling the function by using bind. Bind method sets a new function and the first argument is the object in which the *this* keyword is called on; using it like this will work. handlerFunction.bind(0.5). the this keyword in here will now point to 0.5. see above. we will now set the opacity argument to *this* on the handlerFunction function above */
+
 
 
 ///////////////////////////////////////////////////////////
