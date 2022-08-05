@@ -80,7 +80,11 @@ console.log(allSections);
 const sectionObsCallBack = function(entries, observer){
 const  [entry] = entries
 console.log(entry.target)
-entry.target.classList.remove("section--hidden")
+if (entry.isIntersecting === false) return;
+else {
+  entry.target.classList.remove("section--hidden");
+}
+observer.unobserve(entry.target)
 }
 
 const sectionObserver = new IntersectionObserver(sectionObsCallBack, {
