@@ -128,6 +128,32 @@ unorderedListNav.addEventListener("mouseover", handlerFunction.bind(0.5))
 unorderedListNav.addEventListener("mouseout", handlerFunction.bind(1))
 /* // calling the function by using bind. Bind method sets a new function and the first argument is the object in which the *this* keyword is called on; using it like this will work. handlerFunction.bind(0.5). the this keyword in here will now point to 0.5. see above. we will now set the opacity argument to *this* on the handlerFunction function above */
 
+//////////////////////////////////////////
+// lazy loading images
+
+const lazyImages = document.querySelectorAll("img[data-src]")
+
+const lazyImagesCallBack = function(entries, observer){
+  const [entry] = entries;
+  entry.target.src = entry.target.dataset.src;
+
+  /* before you remove the lazy-img class which is the blur, allow the image to load first, i have good internet connection and i am using a good pc that is why it loads immediately and displays the high resolution image. if not, i would need to see the low resolution image and later see the high resolution. Solution to this is to listen to laod event before removing the class */
+
+  entry.target.addEventListener("load", function (e) {
+    entry.target.classList.remove("lazy-img");
+  });
+  observer.unobserve(entry.target);
+}
+
+const lazyImagesObserver = new IntersectionObserver(lazyImagesCallBack, {
+  root: null,
+  threshold: 0,
+  rootMargin: "200px"
+})
+
+lazyImages.forEach(img=> lazyImagesObserver.observe(img))
+
+
 
 
 ///////////////////////////////////////////////////////////
