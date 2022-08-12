@@ -45,7 +45,7 @@ allLinks.forEach(function (link) {
 
 // console.log(document.querySelector(".main-nav").getBoundingClientRect().height);
 const navHeight = document
-  .querySelector(".main-nav")
+  .querySelector(".header")
   .getBoundingClientRect().height; // this is the height of the nav. instead of hardcoding the height in the rootMargin, we get the height from the ClientRect so that when the height changes due to responsiveness
   console.log(navHeight);
 
@@ -110,7 +110,7 @@ const handlerFunction = function (e) {
       .closest(".nav-list")
       .querySelectorAll(".main-nav-link"); //this will select the siblings of the main-nav-link and returning a nodeList which can now be looped using forEach
 
-    const logo = link.closest(".main-nav").querySelector("img");
+    const logo = link.closest(".header").querySelector("img");
     console.log(logo);
 
     siblings.forEach((indivEl) => {
